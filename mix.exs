@@ -6,7 +6,7 @@ defmodule Worder.MixProject do
       app: :worder,
       version: "0.1.0",
       elixir: "~> 1.8",
-      escript: [main_module: Worder.CLI],
+      escript: [main_module: Worder],
       deps: deps()
     ]
   end

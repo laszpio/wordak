@@ -15,4 +15,11 @@ defmodule Worder do
   def hello do
     :world
   end
+
+  def main(args) do
+    case args do
+      [] -> IO.puts "stdio"
+      files = [_|_] -> IO.inspect files
+    end
+  end
 end
