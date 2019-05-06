@@ -4,22 +4,29 @@ defmodule Worder do
   """
 
   @doc """
-  Hello world.
+    Removes punctuation, line endings, and is case insensitive
 
-  ## Examples
+    iex> Worder.cleanup("aaa bbb, ccc  \tddd... eee?")
+    "aaa bbb ccc ddd eee"
 
-      iex> Worder.hello()
-      :world
+    iex> Worder.cleanup("I love sandwiches.")
+    "i love sandwiches"
 
+    iex> Worder.cleanup("(I LOVE SANDWICHES!!)")
+    "i love sandwiches"
   """
-  def hello do
-    :world
+
+  def cleanup(text) do
+    text
+    |> String.replace(~r/[\p{P}\p{S}]/, "")
+    |> String.replace(~r/\s+/, " ")
+    |> String.downcase()
   end
 
   def main(args) do
     case args do
-      [] -> IO.puts "stdio"
-      files = [_|_] -> IO.inspect files
+      [] -> IO.puts("stdio")
+      files = [_ | _] -> IO.inspect(files)
     end
   end
 end
