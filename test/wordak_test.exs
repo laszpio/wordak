@@ -1,8 +1,8 @@
-defmodule WorderTest do
+defmodule WordakTest do
   use ExUnit.Case
-  doctest Worder
+  doctest Wordak
 
-  import Worder
+  import Wordak
 
   describe ".cleanup" do
     test "remove zero-length character" do

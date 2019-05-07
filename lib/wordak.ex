@@ -1,6 +1,6 @@
-defmodule Worder do
+defmodule Wordak do
   @moduledoc """
-  Documentation for Worder.
+  Documentation for Wordak.
   """
 
   def words([]), do: []
