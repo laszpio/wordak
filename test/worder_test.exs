@@ -14,6 +14,10 @@ defmodule WorderTest do
       assert cleanup("aaa,  bbb, ccc") == "aaa bbb ccc"
     end
 
+    test "spacial chars" do
+      assert cleanup("!@#$%^&*(){}[]:;'/?><,.~`-_+=|word") == "word"
+    end
+
     test "new lines" do
       assert cleanup("I love\nsandwiches.") == "i love sandwiches"
     end
@@ -24,6 +28,11 @@ defmodule WorderTest do
 
     test "abbreviations" do
       assert cleanup("M.A.") == "ma"
+    end
+
+    test "quotes" do
+      assert cleanup("is it \"WORD\"?") == "is it word"
+      assert cleanup("is it \'WORD\'?") == "is it word"
     end
   end
 
