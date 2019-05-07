@@ -3,13 +3,29 @@ defmodule Worder do
   Documentation for Worder.
   """
 
+  def words([]), do: []
+
+  def words(list), do: words(list, [])
+
+  def words([current | rest], acc) do
+    if length(rest) > 1 do
+      new = [current | Enum.take(rest, 2)] |> Enum.join(" ")
+      words(rest, [new | acc])
+    else
+      acc
+    end
+  end
+
   def count(input) do
     input
+    |> String.split()
+    |> words()
+    |> Enum.reduce(%{}, fn x, acc -> Map.update(acc, x, 1, &(&1 + 1)) end)
   end
 
   @doc """
-    Removes punctuation, line endings, and is case insensitive
-   """
+   Removes punctuation, line endings, and is case insensitive
+  """
 
   def cleanup(text) do
     text
@@ -30,7 +46,7 @@ defmodule Worder do
 
   def main(args) do
     case args do
-      [] -> read()
+      [] -> read() |> count()
       files = [_ | _] -> IO.inspect(files)
     end
   end
