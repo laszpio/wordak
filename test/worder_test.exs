@@ -33,12 +33,12 @@ defmodule WorderTest do
              "b c d" => 1,
              "c d e" => 1,
              "d e f" => 1
-    }
+           }
 
     assert count("a b c a b c a") == %{
-      "a b c" => 2,
-      "b c a" => 2,
-      "c a b" => 1
-    }
+             "a b c" => 2,
+             "b c a" => 2,
+             "c a b" => 1
+           }
   end
 end

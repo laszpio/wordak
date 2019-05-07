@@ -7,13 +7,11 @@ defmodule Worder do
 
   def words(list), do: words(list, [])
 
-  def words([current | rest], acc) do
-    if length(rest) > 1 do
-      new = [current | Enum.take(rest, 2)] |> Enum.join(" ")
-      words(rest, [new | acc])
-    else
-      acc
-    end
+  def words(list, acc) when length(list) == 2, do: acc
+
+  def words([current | rest], acc) when length(rest) > 1 do
+    new = [current | Enum.take(rest, 2)] |> Enum.join(" ")
+    words(rest, [new | acc])
   end
 
   def count(input) do
@@ -34,7 +32,6 @@ defmodule Worder do
     |> String.replace(~r/\r|\n/, " ")
     |> String.replace(~r/\s+/, " ")
     |> String.downcase()
-    |> String.trim()
   end
 
   def read() do
@@ -46,7 +43,7 @@ defmodule Worder do
 
   def main(args) do
     case args do
-      [] -> read() |> count()
+      [] -> read() |> count() |> IO.inspect()
       files = [_ | _] -> IO.inspect(files)
     end
   end
