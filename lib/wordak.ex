@@ -16,7 +16,7 @@ defmodule Wordak do
 
   def count(input) do
     input
-    |> String.split()
+    |> String.split(" ", trim: true)
     |> words()
     |> Enum.reduce(%{}, fn x, acc -> Map.update(acc, x, 1, &(&1 + 1)) end)
   end
