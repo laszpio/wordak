@@ -19,7 +19,10 @@ defmodule Wordak do
     |> String.split(" ", trim: true)
     |> words()
     |> Enum.reduce(%{}, fn x, acc -> Map.update(acc, x, 1, &(&1 + 1)) end)
+    |> Map.to_list()
   end
+
+  def sort(list) when is_list(list), do: list |> Enum.sort()
 
   @doc """
    Removes punctuation, line endings, and is case insensitive
@@ -43,7 +46,7 @@ defmodule Wordak do
 
   def main(args) do
     case args do
-      [] -> read() |> count() |> IO.inspect()
+      [] -> read() |> count() |> sort() |> IO.inspect()
       files = [_ | _] -> IO.inspect(files)
     end
   end

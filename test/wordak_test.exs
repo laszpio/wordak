@@ -5,7 +5,7 @@ defmodule WordakTest do
   import Wordak
 
   describe ".cleanup" do
-    test "remove zero-length character" do
+    test "removes zero-length character" do
       assert cleanup("\uFEFFThe") == "the"
     end
 
@@ -36,18 +36,26 @@ defmodule WordakTest do
     end
   end
 
-  describe ".count()" do
-    assert count("a b c d e f") == %{
-             "a b c" => 1,
-             "b c d" => 1,
-             "c d e" => 1,
-             "d e f" => 1
-           }
+  describe ".count" do
+    assert count("a b c d e f") == [
+             {"a b c", 1},
+             {"b c d", 1},
+             {"c d e", 1},
+             {"d e f", 1}
+           ]
 
-    assert count("a b c a b c a") == %{
-             "a b c" => 2,
-             "b c a" => 2,
-             "c a b" => 1
-           }
+    assert count("a b c a b c a") == [
+             {"a b c", 2},
+             {"b c a", 2},
+             {"c a b", 1}
+           ]
+  end
+
+  describe ".sort" do
+    assert [{"b c a", 2}, {"a b c", 2}, {"c a b", 1}] |> sort() == [
+             {"a b c", 2},
+             {"b c a", 2},
+             {"c a b", 1}
+           ]
   end
 end
