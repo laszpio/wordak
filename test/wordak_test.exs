@@ -62,5 +62,12 @@ defmodule WordakTest do
              {"b c a", 2},
              {"c a b", 1}
            ]
+
+    assert [{"c a", 1}, {"c b", 1}, {"x x", 2}, {"c c", 1}] |> sort() == [
+             {"x x", 2},
+             {"c a", 1},
+             {"c b", 1},
+             {"c c", 1}
+           ]
   end
 end

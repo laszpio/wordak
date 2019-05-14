@@ -1,6 +1,6 @@
 defmodule Wordak do
   @moduledoc """
-  Documentation for Wordak.
+    Documentation for Wordak.
   """
 
   def words([]), do: []
@@ -14,6 +14,10 @@ defmodule Wordak do
     words(rest, [new | acc])
   end
 
+  @doc """
+    Returns a list of most common three word sequences in the input, along
+    with a count of how many times each occured.
+  """
   def count(input) do
     input
     |> String.split(" ", trim: true)
@@ -22,14 +26,19 @@ defmodule Wordak do
     |> Map.to_list()
   end
 
+  @doc """
+    Returns a list of words sorted by descending occurance and in the
+    alphabetical order
+  """
+
   def sort(list) when is_list(list) do
     list
-    |> List.keysort(1)
+    |> Enum.sort(fn a, b -> [elem(a, 1), elem(b, 0)] <= [elem(b, 1), elem(a, 0)] end)
     |> Enum.reverse()
   end
 
   @doc """
-   Removes punctuation, line endings, and is case insensitive
+   Removes punctuation, line endings, and is case insensitive.
   """
 
   def cleanup(text) do
