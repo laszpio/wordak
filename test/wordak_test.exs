@@ -20,6 +20,11 @@ defmodule WordakTest do
 
     test "new lines" do
       assert cleanup("I love\nsandwiches.") == "i love sandwiches"
+      assert cleanup("I love\n\rsandwiches.") == "i love sandwiches"
+    end
+
+    test "tabulations and extra whitespaces" do
+      assert cleanup("I   love\t\t\tsandwiches.") == "i love sandwiches"
     end
 
     test "case insensitive" do
