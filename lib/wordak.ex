@@ -22,7 +22,11 @@ defmodule Wordak do
     |> Map.to_list()
   end
 
-  def sort(list) when is_list(list), do: list |> Enum.sort()
+  def sort(list) when is_list(list) do
+    list
+    |> List.keysort(1)
+    |> Enum.reverse()
+  end
 
   @doc """
    Removes punctuation, line endings, and is case insensitive
@@ -37,7 +41,7 @@ defmodule Wordak do
     |> String.downcase()
   end
 
-  def read() do
+  defp read_stdio() do
     case IO.read(:stdio, :all) do
       :eof -> :ok
       text -> cleanup(text)
@@ -46,7 +50,7 @@ defmodule Wordak do
 
   def main(args) do
     case args do
-      [] -> read() |> count() |> sort() |> IO.inspect()
+      [] -> read_stdio() |> count() |> sort() |> IO.inspect()
       files = [_ | _] -> IO.inspect(files)
     end
   end
