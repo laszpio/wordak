@@ -15,7 +15,7 @@ defmodule Wordak do
   end
 
   @doc """
-    Returns a list of most common three word sequences in the input, along
+    Returns a map of most common three word sequences in the input, along
     with a count of how many times each occured.
   """
   def count(input) do
@@ -23,7 +23,6 @@ defmodule Wordak do
     |> String.split(" ", trim: true)
     |> words()
     |> Enum.reduce(%{}, fn s, acc -> Map.update(acc, s, 1, &(&1 + 1)) end)
-    |> Map.to_list()
   end
 
   @doc """
@@ -31,8 +30,9 @@ defmodule Wordak do
     alphabetical order
   """
 
-  def sort(list) when is_list(list) do
-    list
+  def sort(count) when is_map(count) do
+    count
+    |> Enum.to_list()
     |> Enum.sort(fn a, b ->
       [elem(a, 1), elem(b, 0)] <= [elem(b, 1), elem(a, 0)]
     end)
@@ -65,7 +65,7 @@ defmodule Wordak do
     |> Enum.reduce(%{}, fn p, acc ->
       Map.update(acc, elem(p, 0), elem(p, 1), &(&1 + elem(p, 1)))
     end)
-    |> Map.to_list()
+    |> sort()
   end
 
   defp read_stdio() do
