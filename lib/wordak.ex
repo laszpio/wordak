@@ -22,7 +22,7 @@ defmodule Wordak do
     input
     |> String.split(" ", trim: true)
     |> words()
-    |> Enum.reduce(%{}, fn x, acc -> Map.update(acc, x, 1, &(&1 + 1)) end)
+    |> Enum.reduce(%{}, fn s, acc -> Map.update(acc, s, 1, &(&1 + 1)) end)
     |> Map.to_list()
   end
 
@@ -33,7 +33,9 @@ defmodule Wordak do
 
   def sort(list) when is_list(list) do
     list
-    |> Enum.sort(fn a, b -> [elem(a, 1), elem(b, 0)] <= [elem(b, 1), elem(a, 0)] end)
+    |> Enum.sort(fn a, b ->
+      [elem(a, 1), elem(b, 0)] <= [elem(b, 1), elem(a, 0)]
+    end)
     |> Enum.reverse()
   end
 
@@ -49,16 +51,20 @@ defmodule Wordak do
     |> String.downcase()
   end
 
-  defp process(input) when is_binary(input) do
+  def process(input) when is_binary(input) do
     input
     |> count()
     |> sort()
   end
 
-  defp process(list) when is_list(list) do
+  def process(list) when is_list(list) do
     list
     |> Enum.map(&read_file(&1))
     |> Enum.map(&process(&1))
+    |> List.flatten()
+    |> Enum.reduce(%{}, fn p, acc ->
+      Map.update(acc, elem(p, 0), elem(p, 1), &(&1 + elem(p, 1)))
+    end)
     |> Map.to_list()
   end
 
@@ -78,7 +84,7 @@ defmodule Wordak do
   def main(args) do
     case args do
       [] -> read_stdio() |> process()
-      files = [_ | _] -> files |> process()
+      files = [_ | _] -> files |> process() |> IO.inspect()
     end
   end
 end
