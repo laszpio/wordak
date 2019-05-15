@@ -49,6 +49,19 @@ defmodule Wordak do
     |> String.downcase()
   end
 
+  defp process(input) when is_binary(input) do
+    input
+    |> count()
+    |> sort()
+  end
+
+  defp process(list) when is_list(list) do
+    list
+    |> Enum.map(&read_file(&1))
+    |> Enum.map(&process(&1))
+    |> Map.to_list()
+  end
+
   defp read_stdio() do
     case IO.read(:stdio, :all) do
       :eof -> :ok
@@ -56,10 +69,16 @@ defmodule Wordak do
     end
   end
 
+  defp read_file(filename) when is_binary(filename) do
+    case File.read(filename) do
+      {:ok, text} -> cleanup(text)
+    end
+  end
+
   def main(args) do
     case args do
-      [] -> read_stdio() |> count() |> sort() |> IO.inspect()
-      files = [_ | _] -> IO.inspect(files)
+      [] -> read_stdio() |> process()
+      files = [_ | _] -> files |> process()
     end
   end
 end
