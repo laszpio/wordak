@@ -61,11 +61,16 @@ defmodule Wordak do
     list
     |> Enum.map(&read_file(&1))
     |> Enum.map(&process(&1))
+    |> combine()
+    |> sort()
+  end
+
+  def combine(list) when is_list(list) do
+    list
     |> List.flatten()
     |> Enum.reduce(%{}, fn p, acc ->
       Map.update(acc, elem(p, 0), elem(p, 1), &(&1 + elem(p, 1)))
     end)
-    |> sort()
   end
 
   defp read_stdio() do
