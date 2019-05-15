@@ -83,8 +83,14 @@ defmodule Wordak do
 
   def main(args) do
     case args do
-      [] -> read_stdio() |> process()
-      files = [_ | _] -> files |> process() |> IO.inspect()
+      [] ->
+        read_stdio()
+        |> process()
+        |> Enum.take(100)
+        |> IO.inspect(limit: :infinity)
+
+      files = [_ | _] ->
+        files |> process() |> Enum.take(100) |> IO.inspect(limit: :infinity)
     end
   end
 end
