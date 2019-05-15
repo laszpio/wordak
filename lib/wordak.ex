@@ -52,17 +52,13 @@ defmodule Wordak do
   end
 
   def process(input) when is_binary(input) do
-    input
-    |> count()
-    |> sort()
+    input |> count()
   end
 
   def process(list) when is_list(list) do
     list
     |> Enum.map(&read_file(&1))
     |> Enum.map(&process(&1))
-    |> combine()
-    |> sort()
   end
 
   def combine(list) when is_list(list) do
@@ -71,6 +67,13 @@ defmodule Wordak do
     |> Enum.reduce(%{}, fn p, acc ->
       Map.update(acc, elem(p, 0), elem(p, 1), &(&1 + elem(p, 1)))
     end)
+  end
+
+  def output(list) when is_list(list) do
+    list
+    |> sort()
+    |> Enum.take(100)
+    |> IO.inspect(limit: :infinity)
   end
 
   defp read_stdio() do
@@ -91,11 +94,12 @@ defmodule Wordak do
       [] ->
         read_stdio()
         |> process()
-        |> Enum.take(100)
-        |> IO.inspect(limit: :infinity)
+        |> output()
 
-      files = [_ | _] ->
-        files |> process() |> Enum.take(100) |> IO.inspect(limit: :infinity)
+      file_names = [_ | _] ->
+        file_names
+        |> process()
+        |> output()
     end
   end
 end

@@ -72,16 +72,20 @@ defmodule WordakTest do
   end
 
   describe ".combine" do
-    assert combine([]) == %{}
+    test "empty" do
+      assert combine([]) == %{}
+    end
 
-    assert combine([
-             [{"a a a", 1}, {"b b b", 2}, {"c c c", 1}],
-             [{"a a a", 1}, {"c c c", 2}, {"d d d", 1}]
-           ]) == %{
-             "a a a" => 2,
-             "b b b" => 2,
-             "c c c" => 3,
-             "d d d" => 1
-           }
+    test "combines 2 results" do
+      assert combine([
+               [{"a a a", 1}, {"b b b", 2}, {"c c c", 1}],
+               [{"a a a", 1}, {"c c c", 2}, {"d d d", 1}]
+             ]) == %{
+               "a a a" => 2,
+               "b b b" => 2,
+               "c c c" => 3,
+               "d d d" => 1
+             }
+    end
   end
 end
