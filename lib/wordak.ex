@@ -64,16 +64,13 @@ defmodule Wordak do
   def combine(list) when is_list(list) do
     list
     |> List.flatten()
-    |> Enum.map(&Map.to_list(&1))
-    |> List.flatten()
-    |> Enum.reduce(%{}, fn p, acc ->
-      Map.update(acc, elem(p, 0), elem(p, 1), &(&1 + elem(p, 1)))
+    |> Enum.reduce(%{}, fn m, acc ->
+      Map.merge(acc, m, fn _k, v1, v2 -> v1 + v2 end)
     end)
   end
 
-  def output(result) when is_list(result) do
+  def output(result) when is_map(result) do
     result
-    |> IO.inspect
     |> sort()
     |> Enum.take(100)
     |> IO.inspect(limit: :infinity)
@@ -102,6 +99,7 @@ defmodule Wordak do
       file_names = [_ | _] ->
         file_names
         |> process()
+        |> combine()
         |> output()
     end
   end
