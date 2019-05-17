@@ -13,11 +13,11 @@ defmodule WordakTest do
     end
 
     test "creates list of 3 words sequences" do
-      assert words(["aa", "bb", "cc", "dd", "ee"]) == [
-               "aa bb cc",
-               "bb cc dd",
-               "cc dd ee"
-             ]
+      words = words(["aa", "bb", "cc", "dd", "ee"])
+
+      assert Enum.member?(words, "aa bb cc")
+      assert Enum.member?(words, "bb cc dd")
+      assert Enum.member?(words, "cc dd ee")
     end
   end
 
