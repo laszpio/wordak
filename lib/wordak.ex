@@ -15,15 +15,14 @@ defmodule Wordak do
   end
 
   @doc """
-    Returns a list of most common three word sequences in the input, along
+    Returns a map of most common three word sequences in the input, along
     with a count of how many times each occured.
   """
   def count(input) do
     input
     |> String.split(" ", trim: true)
     |> words()
-    |> Enum.reduce(%{}, fn x, acc -> Map.update(acc, x, 1, &(&1 + 1)) end)
-    |> Map.to_list()
+    |> Enum.reduce(%{}, fn s, acc -> Map.update(acc, s, 1, &(&1 + 1)) end)
   end
 
   @doc """
@@ -31,9 +30,12 @@ defmodule Wordak do
     alphabetical order
   """
 
-  def sort(list) when is_list(list) do
-    list
-    |> Enum.sort(fn a, b -> [elem(a, 1), elem(b, 0)] <= [elem(b, 1), elem(a, 0)] end)
+  def sort(count) when is_map(count) do
+    count
+    |> Enum.to_list()
+    |> Enum.sort(fn a, b ->
+      [elem(a, 1), elem(b, 0)] <= [elem(b, 1), elem(a, 0)]
+    end)
     |> Enum.reverse()
   end
 
@@ -49,6 +51,31 @@ defmodule Wordak do
     |> String.downcase()
   end
 
+  def process(input) when is_binary(input) do
+    input |> count()
+  end
+
+  def process(list) when is_list(list) do
+    list
+    |> Enum.map(&read_file(&1))
+    |> Enum.map(&process(&1))
+  end
+
+  def combine(list) when is_list(list) do
+    list
+    |> List.flatten()
+    |> Enum.reduce(%{}, fn m, acc ->
+      Map.merge(acc, m, fn _k, v1, v2 -> v1 + v2 end)
+    end)
+  end
+
+  def output(result) when is_map(result) do
+    result
+    |> sort()
+    |> Enum.take(100)
+    |> IO.inspect(limit: :infinity)
+  end
+
   defp read_stdio() do
     case IO.read(:stdio, :all) do
       :eof -> :ok
@@ -56,10 +83,24 @@ defmodule Wordak do
     end
   end
 
+  defp read_file(filename) when is_binary(filename) do
+    case File.read(filename) do
+      {:ok, text} -> cleanup(text)
+    end
+  end
+
   def main(args) do
     case args do
-      [] -> read_stdio() |> count() |> sort() |> IO.inspect()
-      files = [_ | _] -> IO.inspect(files)
+      [] ->
+        read_stdio()
+        |> process()
+        |> output()
+
+      file_names = [_ | _] ->
+        file_names
+        |> process()
+        |> combine()
+        |> output()
     end
   end
 end
