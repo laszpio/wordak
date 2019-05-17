@@ -3,13 +3,17 @@ defmodule Wordak do
     Documentation for Wordak.
   """
 
-  def words([]), do: []
+  @doc """
+    Returns a list of three words sequences
+  """
 
-  def words(list), do: words(list, [])
+  def words(list) when is_list(list) and length(list) <= 1, do: []
 
-  def words(list, acc) when length(list) == 2, do: acc
+  def words(list), do: is_list(list) and words(list, [])
 
-  def words([current | rest], acc) when length(rest) > 1 do
+  defp words(list, acc) when length(list) == 2, do: acc
+
+  defp words([current | rest], acc) when length(rest) > 1 do
     new = [current | Enum.take(rest, 2)] |> Enum.join(" ")
     words(rest, [new | acc]) |> Enum.reverse()
   end

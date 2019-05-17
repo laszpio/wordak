@@ -7,13 +7,8 @@ defmodule WordakTest do
   describe ".words" do
     test "empty input list" do
       assert words([]) == []
-    end
-
-    test "input list of 2 words" do
+      assert words(["aa"]) == []
       assert words(["aa", "bb"]) == []
-    end
-
-    test "input list of 3 words" do
       assert words(["aa", "bb", "cc"]) == ["aa bb cc"]
     end
 
