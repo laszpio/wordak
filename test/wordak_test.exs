@@ -4,6 +4,28 @@ defmodule WordakTest do
 
   import Wordak
 
+  describe ".words" do
+    test "empty input list" do
+      assert words([]) == []
+    end
+
+    test "input list of 2 words" do
+      assert words(["aa", "bb"]) == []
+    end
+
+    test "input list of 3 words" do
+      assert words(["aa", "bb", "cc"]) == ["aa bb cc"]
+    end
+
+    test "creates list of 3 words sequences" do
+      assert words(["aa", "bb", "cc", "dd", "ee"]) == [
+               "aa bb cc",
+               "bb cc dd",
+               "cc dd ee"
+             ]
+    end
+  end
+
   describe ".cleanup" do
     test "removes zero-length character" do
       assert cleanup("\uFEFFThe") == "the"

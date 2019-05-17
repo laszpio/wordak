@@ -11,7 +11,7 @@ defmodule Wordak do
 
   def words([current | rest], acc) when length(rest) > 1 do
     new = [current | Enum.take(rest, 2)] |> Enum.join(" ")
-    words(rest, [new | acc])
+    words(rest, [new | acc]) |> Enum.reverse()
   end
 
   @doc """
