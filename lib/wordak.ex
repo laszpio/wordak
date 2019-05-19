@@ -7,25 +7,25 @@ defmodule Wordak do
     Returns a list of three words sequences
   """
 
-  def words(list) when is_list(list) and length(list) <= 1, do: []
+  def words(list, n) when is_list(list) and length(list) <= n - 2, do: []
 
-  def words(list), do: is_list(list) and words(list, [])
+  def words(list, n), do: is_list(list) and words(list, n, [])
 
-  defp words(list, acc) when length(list) == 2, do: acc
+  defp words(list, n, acc) when length(list) == n - 1, do: acc
 
-  defp words([current | rest], acc) when length(rest) > 1 do
-    new = [current | Enum.take(rest, 2)] |> Enum.join(" ")
-    words(rest, [new | acc])
+  defp words([current | rest], n, acc) when length(rest) > 1 do
+    new = [current | Enum.take(rest, n - 1)] |> Enum.join(" ")
+    words(rest, n, [new | acc])
   end
 
   @doc """
     Returns a map of most common three word sequences in the input, along
     with a count of how many times each occured.
   """
-  def count(input) do
+  def count(input, n) do
     input
     |> String.split(" ", trim: true)
-    |> words()
+    |> words(n)
     |> Enum.reduce(%{}, fn s, acc -> Map.update(acc, s, 1, &(&1 + 1)) end)
   end
 
@@ -55,14 +55,14 @@ defmodule Wordak do
     |> String.downcase()
   end
 
-  def process(input) when is_binary(input) do
-    input |> count()
+  def process(input, n) when is_binary(input) do
+    input |> count(n)
   end
 
-  def process(list) when is_list(list) do
+  def process(list, n) when is_list(list) do
     list
     |> Enum.map(&read_file(&1))
-    |> Enum.map(&process(&1))
+    |> Enum.map(&process(&1, n))
   end
 
   def combine(list) when is_list(list) do
@@ -97,12 +97,12 @@ defmodule Wordak do
     case args do
       [] ->
         read_stdio()
-        |> process()
+        |> process(3)
         |> output()
 
       file_names = [_ | _] ->
         file_names
-        |> process()
+        |> process(3)
         |> combine()
         |> output()
     end

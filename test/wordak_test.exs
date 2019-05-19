@@ -4,16 +4,18 @@ defmodule WordakTest do
 
   import Wordak
 
+  @seq_length 3
+
   describe ".words" do
     test "empty input list" do
-      assert words([]) == []
-      assert words(["aa"]) == []
-      assert words(["aa", "bb"]) == []
-      assert words(["aa", "bb", "cc"]) == ["aa bb cc"]
+      assert words([], @seq_length) == []
+      assert words(["aa"], @seq_length) == []
+      assert words(["aa", "bb"], @seq_length) == []
+      assert words(["aa", "bb", "cc"], @seq_length) == ["aa bb cc"]
     end
 
     test "creates list of 3 words sequences" do
-      words = words(["aa", "bb", "cc", "dd", "ee"])
+      words = words(["aa", "bb", "cc", "dd", "ee"], @seq_length)
 
       assert Enum.member?(words, "aa bb cc")
       assert Enum.member?(words, "bb cc dd")
@@ -59,14 +61,14 @@ defmodule WordakTest do
   end
 
   describe ".count" do
-    assert count("a b c d e f") == %{
+    assert count("a b c d e f", @seq_length) == %{
              "a b c" => 1,
              "b c d" => 1,
              "c d e" => 1,
              "d e f" => 1
            }
 
-    assert count("a b c a b c a") == %{
+    assert count("a b c a b c a", @seq_length) == %{
              "a b c" => 2,
              "b c a" => 2,
              "c a b" => 1
