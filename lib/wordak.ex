@@ -4,7 +4,7 @@ defmodule Wordak do
   """
 
   @doc """
-    Returns a list of three words sequences
+    Returns a list of n-words sequences
   """
 
   def words(list, n) when is_list(list) and length(list) <= n - 2, do: []
@@ -19,7 +19,7 @@ defmodule Wordak do
   end
 
   @doc """
-    Returns a map of most common three word sequences in the input, along
+    Returns a map of most common n-word sequences in the input, along
     with a count of how many times each occured.
   """
   def count(input, n) do
@@ -55,15 +55,26 @@ defmodule Wordak do
     |> String.downcase()
   end
 
+  @doc """
+    Processes string into count of n-words sequences
+  """
   def process(input, n) when is_binary(input) do
     input |> count(n)
   end
+
+  @doc """
+    Processes files into into count of n-words sequences
+  """
 
   def process(list, n) when is_list(list) do
     list
     |> Enum.map(&read_file(&1))
     |> Enum.map(&process(&1, n))
   end
+
+  @doc """
+    Combines list of counts of n-words seqeunces into single one
+  """
 
   def combine(list) when is_list(list) do
     list
@@ -72,6 +83,10 @@ defmodule Wordak do
       Map.merge(acc, m, fn _k, v1, v2 -> v1 + v2 end)
     end)
   end
+
+  @doc """
+    Formats n-word sequences
+  """
 
   def output(result) when is_map(result) do
     result
