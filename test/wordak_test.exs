@@ -17,9 +17,20 @@ defmodule WordakTest do
     test "creates list of 3 words sequences" do
       words = words(["aa", "bb", "cc", "dd", "ee"], @seq_length)
 
+      assert length(words) == 3
       assert Enum.member?(words, "aa bb cc")
       assert Enum.member?(words, "bb cc dd")
       assert Enum.member?(words, "cc dd ee")
+    end
+
+    test "creates list of 2 words sequences" do
+      words = words(["aa", "bb", "cc", "dd", "ee"], 2)
+
+      assert length(words) == 4
+      assert Enum.member?(words, "aa bb")
+      assert Enum.member?(words, "bb cc")
+      assert Enum.member?(words, "cc dd")
+      assert Enum.member?(words, "dd ee")
     end
   end
 

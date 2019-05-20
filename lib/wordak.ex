@@ -6,14 +6,13 @@ defmodule Wordak do
   @doc """
     Returns a list of n-words sequences
   """
-
   def words(list, n) when is_list(list) and length(list) <= n - 2, do: []
 
   def words(list, n), do: is_list(list) and words(list, n, [])
 
   defp words(list, n, acc) when length(list) == n - 1, do: acc
 
-  defp words([current | rest], n, acc) when length(rest) > 1 do
+  defp words([current | rest], n, acc) when length(rest) > n - 2 do
     new = [current | Enum.take(rest, n - 1)] |> Enum.join(" ")
     words(rest, n, [new | acc])
   end
@@ -33,7 +32,6 @@ defmodule Wordak do
     Returns a list of words sorted by descending occurance and in the
     alphabetical order
   """
-
   def sort(count) when is_map(count) do
     count
     |> Enum.to_list()
@@ -46,7 +44,6 @@ defmodule Wordak do
   @doc """
    Removes punctuation, line endings, and is case insensitive.
   """
-
   def cleanup(text) do
     text
     |> String.replace(~r/[\x{200B}\x{200C}\x{200D}\x{FEFF}]/u, "")
@@ -65,7 +62,6 @@ defmodule Wordak do
   @doc """
     Processes files into into count of n-words sequences
   """
-
   def process(list, n) when is_list(list) do
     list
     |> Enum.map(&read_file(&1))
@@ -75,7 +71,6 @@ defmodule Wordak do
   @doc """
     Combines list of counts of n-words seqeunces into single one
   """
-
   def combine(list) when is_list(list) do
     list
     |> List.flatten()
@@ -87,7 +82,6 @@ defmodule Wordak do
   @doc """
     Formats n-word sequences
   """
-
   def output(result) when is_map(result) do
     result
     |> sort()
