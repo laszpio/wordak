@@ -103,15 +103,19 @@ defmodule Wordak do
   end
 
   def main(args) do
-    case args do
+    {opts, word, _} = OptionParser.parse(args, strict: [sequence: :integer])
+
+    sequence_length = Keyword.get(opts, :sequence, 3)
+
+    case word do
       [] ->
         read_stdio()
-        |> process(3)
+        |> process(sequence_length)
         |> output()
 
       file_names = [_ | _] ->
         file_names
-        |> process(3)
+        |> process(sequence_length)
         |> combine()
         |> output()
     end
