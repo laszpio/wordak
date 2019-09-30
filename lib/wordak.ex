@@ -46,7 +46,7 @@ defmodule Wordak do
   """
   def cleanup(text) do
     text
-    |> String.replace(~r/[\x{200B}\x{200C}\x{200D}\x{FEFF}]/u, "")
+    |> String.replace(~r/(*UTF8)[\x{200B}\x{200C}\x{200D}\x{FEFF}]/u, "")
     |> String.replace(~r/[\p{P}\p{S}]/, "")
     |> String.replace(~r/\s+/, " ")
     |> String.downcase()
