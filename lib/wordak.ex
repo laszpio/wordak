@@ -89,7 +89,7 @@ defmodule Wordak do
     |> Enum.each(fn {words, count} = _ -> IO.puts("#{words}: #{count}") end)
   end
 
-  defp read_stdio() do
+  defp read_stdio do
     case IO.read(:stdio, :all) do
       :eof -> :ok
       text -> cleanup(text)
