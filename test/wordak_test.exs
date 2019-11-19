@@ -121,14 +121,29 @@ defmodule WordakTest do
   end
 
   describe ".output" do
+    @sample %{"a a a" => 10, "b b b" => 5, "c c c" => 3}
+
     test "prints words with counter" do
-      exec = fn -> output(%{"a a a" => 10, "b b b" => 5, "c c c" => 3}) end
+      exec = fn -> output(@sample) end
 
       assert capture_io(exec) =~ ~s"""
              a a a: 10
              b b b: 5
              c c c: 3
              """
+    end
+
+    test "limits output" do
+      limit_to_2 = fn -> output(@sample, 2) end
+
+      assert capture_io(limit_to_2) =~ ~s"""
+             a a a: 10
+             b b b: 5
+             """
+
+      limit_to_1 = fn -> output(@sample, 1) end
+
+      assert capture_io(limit_to_1) =~ "a a a: 10"
     end
   end
 end
