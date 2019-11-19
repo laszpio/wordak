@@ -80,13 +80,13 @@ defmodule Wordak do
   end
 
   @doc """
-    Formats n-word sequences
+    Formats n-words sequences
   """
-  def output(result) when is_map(result) do
+  def output(result, limit \\ 100) when is_map(result) do
     result
     |> sort()
-    |> Enum.take(100)
-    |> IO.inspect(limit: :infinity)
+    |> Enum.take(limit)
+    |> Enum.each(fn {words, count} = _ -> IO.puts("#{words}: #{count}") end)
   end
 
   defp read_stdio() do

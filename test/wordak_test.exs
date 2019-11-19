@@ -1,5 +1,6 @@
 defmodule WordakTest do
   use ExUnit.Case
+  import ExUnit.CaptureIO
   doctest Wordak
 
   import Wordak
@@ -116,6 +117,18 @@ defmodule WordakTest do
                "c c c" => 3,
                "d d d" => 1
              }
+    end
+  end
+
+  describe ".output" do
+    test "prints words with counter" do
+      exec = fn -> output(%{"a a a" => 10, "b b b" => 5, "c c c" => 3}) end
+
+      assert capture_io(exec) =~ ~s"""
+             a a a: 10
+             b b b: 5
+             c c c: 3
+             """
     end
   end
 end
