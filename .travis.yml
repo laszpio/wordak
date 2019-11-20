@@ -1,0 +1,21 @@
+language: elixir
+
+elixir:
+  - 1.9.0
+  - 1.8.2
+  - 1.8.0
+otp_release:
+  - 21.0
+
+env:
+  global:
+    - MIX_ENV=test
+
+cache:
+  directories:
+    - _build
+    - deps
+
+script:
+  - mix credo --strict
+  - mix test
