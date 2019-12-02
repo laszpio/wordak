@@ -134,16 +134,14 @@ defmodule WordakTest do
     end
 
     test "limits output" do
-      limit_to_2 = fn -> output(@sample, 2) end
-
-      assert capture_io(limit_to_2) =~ ~s"""
+      assert capture_io(fn -> output(@sample, 2) end) == ~s"""
              a a a: 10
              b b b: 5
              """
 
-      limit_to_1 = fn -> output(@sample, 1) end
-
-      assert capture_io(limit_to_1) =~ "a a a: 10"
+      assert capture_io(fn -> output(@sample, 1) end) == ~s"""
+             a a a: 10
+             """
     end
   end
 end
