@@ -53,15 +53,12 @@ defmodule Wordak do
   end
 
   @doc """
-    Processes string into count of n-words sequences
+    Processes string or files into count of n-words sequences
   """
   def process(input, n) when is_binary(input) do
     input |> count(n)
   end
 
-  @doc """
-    Processes files into into count of n-words sequences
-  """
   def process(list, n) when is_list(list) do
     list
     |> Enum.map(&read_file(&1))
